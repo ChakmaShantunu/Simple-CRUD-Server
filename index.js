@@ -26,8 +26,24 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
 
-        app.post("/users", (req, res) => {
+        // database and collection setup
+        const database = client.db('usersdb');
+        const usersCollection = database.collection("users");
+
+
+        // Define the POST route to receive and save a new user
+        app.post("/users", async (req, res) => {
             console.log('data in the server', req.body);
+
+            // Store the incoming user object from the request body
+            const user = req.body;
+
+            // Insert the single user document into the 'users' collection
+            const result = await usersCollection.insertOne(user);
+
+            // Send the result back to the client
+            res.send(result);
+            console.log(`A document was inserted with the _id: ${result.insertedId}`);
         });
 
 
