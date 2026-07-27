@@ -1,5 +1,5 @@
 const express = require('express');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
 require('dotenv').config();
 const app = express();
@@ -50,6 +50,16 @@ async function run() {
             // Send the result back to the client
             res.send(result);
             console.log(`A document was inserted with the _id: ${result.insertedId}`);
+        });
+
+        // delete user
+        app.delete('/users/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await usersCollection.deleteOne(query);
+            res.send(result);
+            console.log('to be deleted', id);
+
         });
 
 
