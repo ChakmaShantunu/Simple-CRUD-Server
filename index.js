@@ -30,6 +30,12 @@ async function run() {
         const database = client.db('usersdb');
         const usersCollection = database.collection("users");
 
+        app.get("/users", async (req, res) => {
+            const cursor = usersCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        });
+
 
         // Define the POST route to receive and save a new user
         app.post("/users", async (req, res) => {
