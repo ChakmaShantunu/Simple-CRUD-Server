@@ -30,6 +30,9 @@ async function run() {
         const database = client.db('usersdb');
         const usersCollection = database.collection("users");
 
+        const database2 = client.db('productdb');
+        const productsCollection = database2.collection("products");
+
         app.get("/users", async (req, res) => {
             const cursor = usersCollection.find();
             const result = await cursor.toArray();
@@ -56,6 +59,17 @@ async function run() {
             const result = await usersCollection.insertOne(user);
 
             // Send the result back to the client
+            res.send(result);
+            console.log(`A document was inserted with the _id: ${result.insertedId}`);
+        });
+
+        // add product
+        app.post("/products", async (req, res) => {
+            console.log('data in the server', req.body);
+
+            const product = req.body;
+            const result = await productsCollection.insertOne(product);
+
             res.send(result);
             console.log(`A document was inserted with the _id: ${result.insertedId}`);
         });
