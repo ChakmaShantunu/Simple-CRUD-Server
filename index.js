@@ -88,7 +88,7 @@ async function run() {
             console.log(`A document was inserted with the _id: ${result.insertedId}`);
         });
 
-        // update user
+        // update user info
         app.put("/users/:id", async (req, res) => {
             const id = req.params.id;
             const filter = { _id: new ObjectId(id) };
@@ -106,6 +106,26 @@ async function run() {
             res.send(result);
 
             console.log(user);
+        });
+
+        // update product info
+        app.put("/products/:id", async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) }
+            const product = req.body;
+
+            const updatedDoc = {
+                $set: {
+                    name: product.name,
+                    price: product.price
+                }
+            };
+
+            const options = { upsert: true };
+            const result = await productsCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+
+            console.log(product);
         });
 
         // delete user
