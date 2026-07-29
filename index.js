@@ -88,6 +88,26 @@ async function run() {
             console.log(`A document was inserted with the _id: ${result.insertedId}`);
         });
 
+        // update user
+        app.put("/users/:id", async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const user = req.body;
+            const updatedDoc = {
+                $set: {
+                    name: user.name,
+                    email: user.email
+                }
+            }
+
+            const options = { upsert: true };
+
+            const result = await usersCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+
+            console.log(user);
+        });
+
         // delete user
         app.delete('/users/:id', async (req, res) => {
             const id = req.params.id;
