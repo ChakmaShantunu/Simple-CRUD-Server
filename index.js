@@ -155,6 +155,23 @@ async function run() {
             console.log(product);
         });
 
+        // update category info
+        app.put("/categories/:id", async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) }
+            const category = req.body;
+
+            const updatedDoc = {
+                $set: {
+                    category_name: category.category_name,
+                    slug: category.slug
+                }
+            }
+            const options = { upsert: true };
+            const result = await categoriesCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        });
+
         // delete user
         app.delete('/users/:id', async (req, res) => {
             const id = req.params.id;
