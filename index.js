@@ -164,6 +164,14 @@ async function run() {
             res.send(result);
         });
 
+        // delete Category
+        app.delete("/categories/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await categoriesCollection.deleteOne(query);
+            res.send(result);
+        });
+
 
 
         // Send a ping to confirm a successful connection
