@@ -48,6 +48,12 @@ async function run() {
             res.send(result);
         });
 
+        app.get("/categories", async (req, res) => {
+            const cursor = categoriesCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        });
+
         // find user
         app.get("/users/:id", async (req, res) => {
             const id = req.params.id;
