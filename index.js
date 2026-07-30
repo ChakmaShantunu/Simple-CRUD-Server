@@ -33,6 +33,9 @@ async function run() {
         const database2 = client.db('productdb');
         const productsCollection = database2.collection("products");
 
+        const database3 = client.db('categorydb');
+        const categoriesCollection = database3.collection("categories");
+
         app.get("/users", async (req, res) => {
             const cursor = usersCollection.find();
             const result = await cursor.toArray();
@@ -84,6 +87,16 @@ async function run() {
             const product = req.body;
             const result = await productsCollection.insertOne(product);
 
+            res.send(result);
+            console.log(`A document was inserted with the _id: ${result.insertedId}`);
+        });
+
+        // add category
+        app.post("/categories", async (req, res) => {
+            console.log('data in the server', req.body);
+
+            const category = req.body;
+            const result = await categoriesCollection.insertOne(category);
             res.send(result);
             console.log(`A document was inserted with the _id: ${result.insertedId}`);
         });
